@@ -64,7 +64,7 @@ class UserDetailsPage extends ConsumerWidget {
                     children: [
                       const Icon(Icons.phone),
                       Text(
-                        user.phone ?? "Unkmown",
+                        user.phone ?? "Unknown",
                         style: GoogleFonts.inter(
                             fontWeight: FontWeight.w300,
                             color: AppColorPalettes.textcolor,
@@ -109,22 +109,19 @@ class UserDetailsPage extends ConsumerWidget {
                         fontSize: 18),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Icon(Icons.language),
+                        const Icon(Icons.language),
                         TextButton(
-                            onPressed: ()async {
-                           await   launchUrl(
-                                mode: LaunchMode.externalApplication,
-                                Uri.parse(user.website!),
-                              );
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(user.website!));
                             },
                             child: Text(
-                              "website: ${user.website}",
+                              user.website ?? "",
                               style: GoogleFonts.inter(
                                   fontWeight: FontWeight.w500,
-                                  color: AppColorPalettes.textcolor,
+                                  color: Colors.blue,
                                   fontSize: 18),
                             ))
                       ],
