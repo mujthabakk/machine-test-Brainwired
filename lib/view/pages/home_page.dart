@@ -2,8 +2,10 @@ import 'package:brainwired_machine_test/controller/user_controller/user_controll
 import 'package:brainwired_machine_test/core/constants/home_page_constants/home_page_constants.dart';
 import 'package:brainwired_machine_test/core/utils/color_palette.dart';
 import 'package:brainwired_machine_test/view/pages/uaser_details_page.dart';
+import 'package:brainwired_machine_test/view/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends ConsumerWidget {
   static const routePath = "/homepage";
@@ -31,10 +33,9 @@ class HomePage extends ConsumerWidget {
                         bottom: BorderSide(
                             color: AppColorPalettes.cardbgcolor, width: 3))),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    child: Center(
-                      child: Text(data[index].name?.substring(0, 1) ?? ""),
-                    ),
+                  leading: UserProfileWidget(
+                    name: data[index].name ?? "",
+                    radius: 30,
                   ),
                   onTap: () {
                     Navigator.pushNamed(
@@ -43,14 +44,11 @@ class HomePage extends ConsumerWidget {
                       arguments: data[index],
                     );
                   },
-                  title: Text(
-                    data[index].name ?? constants.nulltext,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w700),
-                  ),
+                  title: Text(data[index].name ?? constants.nulltext,
+                      style: GoogleFonts.inter(fontWeight: FontWeight.w700)),
                   subtitle: Text(
                     data[index].username ?? constants.nulltext,
-                    style: const TextStyle(fontSize: 16),
+                    style: GoogleFonts.inter(),
                   ),
                 ),
               ),
