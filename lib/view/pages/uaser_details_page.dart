@@ -6,8 +6,8 @@ import 'package:brainwired_machine_test/view/widgets/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class UserDetailsPage extends ConsumerWidget {
   static const routePath = "/userDetailspage";
@@ -20,6 +20,11 @@ class UserDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     /// passed data
     final user = ModalRoute.of(context)?.settings.arguments as UserModel;
+    Future<void> website() async {
+      if (await launchUrl(Uri.parse(user.website!))) {
+        throw "Try Again";
+      }
+    }
 
     return Scaffold(
       backgroundColor: AppColorPalettes.cardbgcolor,
@@ -114,8 +119,8 @@ class UserDetailsPage extends ConsumerWidget {
                       children: [
                         const Icon(Icons.language),
                         TextButton(
-                            onPressed: () async {
-                              await launchUrl(Uri.parse(user.website!));
+                            onPressed: () {
+                              website();
                             },
                             child: Text(
                               user.website ?? "",
@@ -123,8 +128,31 @@ class UserDetailsPage extends ConsumerWidget {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.blue,
                                   fontSize: 18),
-                            ))
+                            )),
                       ],
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final availableMaps = await MapLauncher.installedMaps;
+                      // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                      await availableMaps.first.showMarker(
+                        coords: Coords(double.parse(user.address!.geo!.lat!),
+                            double.parse(user.address!.geo!.lng!)),
+                        title: user.address!.city ?? "Ocean Beach",
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: context.h(300),
+                      decoration: const BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Image.asset(
+                        "assets/image/Googl-map-img.jpg",
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   )
                 ],
